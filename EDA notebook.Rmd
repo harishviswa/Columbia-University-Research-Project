@@ -1,0 +1,124 @@
+---
+title: "EDA"
+output: html_notebook
+---
+
+
+```{r}
+PlayList <- read.csv("PlayList.csv")
+InjuryRecord <- read.csv("InjuryRecord.csv")
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+glimpse(PlayList)
+summary(PlayList)
+colnames(PlayList)
+```
+This is the detailed summary of the various variables within the data set and their classification type. Below is a more detailed description of each variable...
+
+PlayerKey: Player Identification number to be used instead of name
+
+PlayerGame: The number of games the player had played in till the injury
+
+PlayType: Description of the various types of plays that are possible in the NFL. These include passing downs as well as rushing downs.
+
+GameID: Game identification number
+
+StadiumType: Description of the structure of the stadium the player played at.
+
+PlayerGamePlay: The number of games the player has played.
+
+PlayKey: Play identification number to reference specific type of play that occured.
+
+FieldType: Surface of the field ranging from synthetic turf to natural grass.
+
+Position: Identifies the roster position of the player.
+
+RosterPosition: Identifies the roster position of the player.
+
+Temperature: Indicates the temperature at the time of play during the specific game.
+
+PositionGroup: Identifies the roster position of the player.
+
+PlayerDay: The days since the start of the season for the specific player.
+
+Weather: Descriptions of the weather conditions during the specific game and time of play.
+
+```{r}
+summary(as.factor(PlayList$RosterPosition))
+summary(as.factor(PlayList$StadiumType))
+summary(as.factor(PlayList$FieldType))
+summary(as.factor(PlayList$Weather))
+summary(as.factor(PlayList$PlayType))
+summary(as.factor(PlayList$Position))
+summary(as.factor(PlayList$PositionGroup))
+```
+Shows the number of each category that exists within the PlayList dataset.
+
+```{r}
+glimpse(InjuryRecord)
+summary(InjuryRecord)
+colnames(InjuryRecord)
+```
+
+```{r}
+summary(as.factor(InjuryRecord$BodyPart))
+summary(as.factor(InjuryRecord$Surface))
+```
+Shows that the most lower body injuries occured at the Knee and most lower body injuries occured on synthetic field surfaces.
+
+```{r}
+#bar chart
+ggplot(data = nflData) +
+  geom_bar(mapping = aes(x = RosterPosition))
+```
+Shows that linebackers contracted the most injuries out of any position group. This makes sense given the rough nature of the position.
+
+```{r}
+# histogram
+nflData %>% #pipeline expression
+  ggplot() +
+  geom_histogram(mapping = aes(x = PlayerGamePlay), binwidth = 0.1)
+```
+This shows that the most number of injuries occured during the start of the season and declined at a gradual rate as the season progressed.
+
+```{r}
+nflData %>% 
+  ggplot(mapping = aes(x = PlayerGamePlay, colour = PlayType)) +
+  geom_freqpoly(binwidth = 0.1)
+```
+This shows that most injuries occured during pass plays compared to rush plays which could be a suggestion of poor pass protection as well as pass interference calls that could have contributed to a player's injury.
+
+```{r}
+# boxplot (one categorical + one numerical variable)
+nflData %>%
+  ggplot(mapping = aes(x = Position, y = PlayerGame)) +
+  geom_boxplot()
+```
+The higher injury rates occur at the defensive positions compared to offensive positions which may be a sign of dangerous game play on the defensive side of the ball. 
+
+```{r}
+# two categorical variables
+nflData %>% 
+  ggplot() +
+  geom_count(mapping = aes(x = Position, y = PlayType))
+```
+Rush and Pass plays are equally balanced to show that the data contains instances of injury for both rushing and passing downs.
+
+
+Now for the analysis of lower body injuries from the Injury Record data set.
+```{r}
+ggplot(data = InjuryRecord) +
+  geom_bar(mapping = aes(x = BodyPart))
+```
+Evidently, the knee seems to be at high risk of injury according to injury records, whereas the heel seems to have the lowest risk of injury.
+
+```{r}
+ggplot(data = InjuryRecord) +
+  geom_bar(mapping = aes(x = Surface))
+```
+More injuries occured on synthetic field surfaces.
+
+

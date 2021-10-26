@@ -4,4 +4,6 @@ American football produces the most anticipated sports games each year. However,
 
 
 #Quantum Update
+
+
 Following the development of the predictive model and the rehabilitation timeline suggestion, I have advanced this algorithm into a quantum circuit. With more data pouring in from injury records and player data, it is difficult for a classical computer to process and learn this data without crashing. Therefore, I decided to implement Grover's algorithm for searching in unordered databases and the Hamiltonian simulations algorithms for simulation to advance this algorithm into a quantum circuit to be analyzed via quantum-enhanced machine learning on a universal gate-based quantum computer. 
